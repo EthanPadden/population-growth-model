@@ -3,17 +3,21 @@
  * Copyright (C) 2016-present
  */
 
-#ifndef MINIMAL_MODEL_H
-#define MINIMAL_MODEL_H
+#ifndef POPULATION_GROWTH_MODEL_H
+#define POPULATION_GROWTH_MODEL_H
 
 #include <plugininterface.h>
 
 namespace evoplex {
-class MinimalModel: public AbstractModel
+class PopulationGrowth: public AbstractModel
 {
 public:
     bool init() override;
     bool algorithmStep() override;
+
+private:
+    int m_infectedAttrId;
+    int m_prob;
 };
 } // evoplex
-#endif // MINIMAL_MODEL_H
+#endif // POPULATION_GROWTH_MODEL_H
