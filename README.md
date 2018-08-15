@@ -1,55 +1,36 @@
-# Evoplex: Minimal Model
+# Population Growth Model
 
-This is a minimum example of a model plugin for [Evoplex](https://evoplex.github.io). It has the essential files for you to create a new model plugin:
-``` bash
-├── CMakeLists.txt
-├── metadata.json
-├── plugin.cpp
-└── plugin.h
-```
-You do not need to touch the `CMakeLists.txt` file. Also, you must NOT rename any of those files.
+## What is it?
 
-:point_right: **Note:** you *DO NOT* need to compile Evoplex from source to be able to create plugins.
+This is a model plugin for [Evoplex](https://evoplex.org) and is included by default in the software.
 
-### Installing dependencies
-* If you compiled Evoplex from source, you already have all dependencies to compile a plugin and *DO NOT* have to install anything else.
-* If you installed Evoplex from the binary packages, you will have to install the dependencies as follows:
-    * [Instructions for Linux](https://github.com/evoplex/evoplex/wiki/Building-on-Linux#installing-dependencies)
-    * [Instructions for MacOS](https://github.com/evoplex/evoplex/wiki/Building-on-MacOS#installing-dependencies)
-    * [Instructions for Windows](https://github.com/evoplex/evoplex/wiki/Building-on-Windows#installing-dependencies)
+It implements a simple model to simulate the spread of infection across a population.
 
-### Compiling this plugin
+## How it works
 
-:point_right: if you compiled Evoplex from source in Debug mode, you should also compile your plugin in Debug mode.
+Issues regarding population dynamics have been studied in a wide range of domains. For instance, biologists may be interested in understanding how the population's growth rate increases over time, while computer scientists may be looking at how information spreads over a network.
 
-:point_right: the plugin must be compiled with the same architecture (32/64 bits) of Evoplex.
+Here we implement a very simple population growth scenario in Evoplex. The idea is straightforward, in a population of individuals (nodes), some of them are infected, and some are healthy. A healthy individual becomes infected with a given probability if it interacts with an infected individual in its neighbourhood.
 
-#### from QtCreator
-* Open the `CMakeLists.txt`
-* In the projects page, make sure the `EvoplexCore_DIR` is set. If it shows `EvoplexCore_DIR-NOTFOUND` and you compiled Evoplex from source (eg., at `~/evoplex/build`), set it to `~/evoplex/build/src/core/EvoplexCore/` as shown [here](https://i.imgur.com/hyKuFR3.png).
-* Build
+To keep it simple, we consider that the probability of becoming infected is the same for all individuals and does not increase with the number of interactions, i.e., the likelihood of being infected after interacting with one or 100 infected individuals is the same.
 
-#### from command line
-Assuming you placed this repository at `~/evoplex/minimal-model` and you are at `~/evoplex`, just run the commands below:
-``` bash
-mkdir build-plugin
-cd build-plugin
-cmake ../minimal-model
-cmake --build .
-```
-When you run the `cmake` command, you might get an **error** like `FindEvoplexCore.cmake` not found. If you compiled Evoplex from source (eg., at `~/evoplex/build`), just run the command below:
-``` bash
-export EvoplexCore_DIR=~/evoplex/build/src/core/EvoplexCore/
-```
+Thus, the algorithm can be described as follows:
+- at each time step,
+  - each healthy node randomly interacts with another node in its neighbourhood
+  - if the neighbour is infected, it becomes infected with a given probability
 
+## Examples
 
-## Running this plugin
-After compiling the plugin, open Evoplex, go to the `Plugins` page, click on `import` and select the `plugin_minimal-model` file at `~/evoplex/minimal-model/build/plugin/`. The plugin will now be available in the `Projects` page.
+The figure below shows a screenshot of an experiment in Evoplex using this model. In this experiment, the model is initialized with a population of 100x100 healthy agents (i.e., all agents with <i>infected=false</i>); after this, we place one infected agent in the middle of the grid.
 
-## Support
-- Ask a question in the [mailing list](https://groups.google.com/group/evoplex) (or send it directly to evoplex@googlegroups.com)
-- Follow us on [Twitter](https://twitter.com/EvoplexMAS)
-- Join us on our [Gitter chat channel](https://gitter.im/EvoplexMAS/evoplex)
+<p align="center">
+<img src="example.gif" alt="Example" width="70%">
+</p>
 
-## Licensing
-This plugin is available freely under the [MIT license](https://opensource.org/licenses/MIT).
+## How to cite
+If you mention this model or the Evoplex software in a publication, please cite it as:
+
+> Marcos Cardinot, Colm O'Riordan, & Josephine Griffith. (2018). Evoplex: a powerful multi-agent system for networks. Zenodo. http://doi.org/10.5281/zenodo.1340734
+
+## License
+This plugin is licensed under the [MIT License](https://opensource.org/licenses/MIT) terms.
